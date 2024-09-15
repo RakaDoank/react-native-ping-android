@@ -1,6 +1,6 @@
 {
 	"name": "react-native-ping-android",
-	"version": "1.0.0-beta.4",
+	"version": "1.0.0-rc.1",
 	"description": "Ping controller for React Native android app",
 	"author": "RakaDoank <rakaaudira@gmail.com> (https://github.com/RakaDoank)",
 	"license": "MIT",
