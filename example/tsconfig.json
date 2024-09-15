@@ -1,0 +1,12 @@
+{
+	"extends": "./node_modules/react-native-ping-android/configs/typescript/tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"exclude": [
+		"lib/**"
+	]
+}

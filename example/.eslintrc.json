@@ -1,0 +1,10 @@
+{
+	"root": true,
+	"extends": "../package/.eslintrc.json",
+	"rules": {
+		"react/react-in-jsx-scope": "off"
+	},
+	"ignorePatterns": [
+		"lib/*"
+	]
+}
