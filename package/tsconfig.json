@@ -1,0 +1,8 @@
+{
+	"extends": "./configs/typescript/tsconfig.json",
+	"compilerOptions": {
+		"paths": {
+			"react-native-ping-android/*": ["./src/*"]
+		}
+	}
+}

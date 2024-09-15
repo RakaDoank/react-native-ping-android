@@ -1,0 +1,141 @@
+{
+	"name": "react-native-ping-android",
+	"version": "1.0.0-beta.4",
+	"description": "Ping controller for React Native android app",
+	"author": "RakaDoank <rakaaudira@gmail.com> (https://github.com/RakaDoank)",
+	"license": "MIT",
+	"homepage": "https://github.com/RakaDoank/react-native-ping-android",
+	"repository": "https://github.com/RakaDoank/react-native-ping-android",
+	"keywords": [
+		"react-native",
+		"react-native-ping",
+		"react-native-ping-android",
+		"ping-android",
+		"ping"
+	],
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org"
+	},
+	"scripts": {
+		"code-check": "npx tsc && npm run lint",
+		"lint": "eslint .",
+		"prepare": "bob build",
+		"prepack": "run-script-os",
+		"prepack:darwin:linux": "bash ../scripts/package-prepack/bash.sh",
+		"prepack:win32": "powershell -NoProfile -ExecutionPolicy Unrestricted -Command ../scripts/package-prepack/powershell.ps1",
+		"postpack": "run-script-os",
+		"postpack:darwin:linux": "bash ../scripts/package-postpack/bash.sh",
+		"postpack:win32": "powershell -NoProfile -ExecutionPolicy Unrestricted -Command ../scripts/package-postpack/powershell.ps1",
+		"release": "dotenv release-it"
+	},
+	"source": "./src/index.ts",
+	"main": "./lib/commonjs/index.js",
+	"module": "./lib/module/index.js",
+	"types": "./lib/typescript/commonjs/src/index.d.ts",
+	"react-native": "src/index.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./lib/typescript/module/src/index.d.ts",
+				"react-native": "./lib/modules/index.native.js",
+				"default": "./lib/module/index.js"
+			},
+			"require": {
+				"types": "./lib/typescript/commonjs/src/index.d.ts",
+				"react-native": "./lib/commonjs/index.native.js",
+				"default": "./lib/commonjs/index.js"
+			}
+		}
+	},
+	"files": [
+		"src",
+		"lib",
+		"android",
+		"configs",
+		"!android/build",
+		"!android/gradle",
+		"!android/gradlew",
+		"!android/gradlew.bat",
+		"!android/local.properties",
+		"!**/__tests__",
+		"!**/__fixtures__",
+		"!**/__mocks__",
+		"!**/.*"
+	],
+	"codegenConfig": {
+		"name": "RNPingAndroidSpec",
+		"type": "modules",
+		"jsSrcsDir": "src/native-module",
+		"android": {
+			"javaPackageName": "com.audira.lib.reactnative.pingandroid"
+		}
+	},
+	"devDependencies": {
+		"@react-native/eslint-config": "0.75.3",
+		"@react-native/typescript-config": "0.75.3",
+		"@stylistic/eslint-plugin": "^2.8.0",
+		"@types/react": "^18.2.44",
+		"@typescript-eslint/eslint-plugin": "8.5.0",
+		"@typescript-eslint/parser": "8.5.0",
+		"dotenv-cli": "^7.4.2",
+		"eslint": "8.57.0",
+		"eslint-import-resolver-typescript": "^3.6.3",
+		"eslint-plugin-import": "^2.30.0",
+		"eslint-plugin-jest": "^28.8.3",
+		"react": ">=17",
+		"react-native": "^0.75.3",
+		"react-native-builder-bob": "^0.30.2",
+		"release-it": "^17.6.0",
+		"run-script-os": "^1.1.6",
+		"typescript": "^5.6.2"
+	},
+	"peerDependencies": {
+		"react": "*",
+		"react-native": "*"
+	},
+	"react-native-builder-bob": {
+		"source": "src",
+		"output": "lib",
+		"targets": [
+			[
+				"commonjs",
+				{
+					"esm": true
+				}
+			],
+			[
+				"module",
+				{
+					"esm": true
+				}
+			],
+			[
+				"typescript",
+				{
+					"esm": true
+				}
+			]
+		]
+	},
+	"release-it": {
+		"git": {
+			"commitMessage": "chore: release ${version}",
+			"tagName": "v${version}"
+		},
+		"github": {
+			"release": true
+		},
+		"npm": {
+			"publish": true
+		},
+		"hooks": {
+			"before:init": "npm run code-check",
+			"before:git:release": "echo Pushing ${name} to Git...",
+			"after:git:release": "echo Successfully pushed ${name} to Git",
+			"before:github:release": "echo Making a Github release...",
+			"after:github:release": "echo Successfully created a Github release",
+			"after:release": "echo Successfully released ${name} v${version} to ${repo.repository}"
+		}
+	}
+}
