@@ -134,8 +134,8 @@ Otherwise, result will return with PingStatus.INVALID_ARG
 | Properties    | Type                              | Remarks                                                                            |
 | ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
 | **isRunning** | `boolean`                         |
-| **result**    | `ICMPResultInterface`             | Full detail at Definitions
-| **start**     | `UseICMPStartParamsInterface`     | Full detail at Definitions
+| **result**    | `ICMPResultInterface`             | See [ICMPResultInterface](#icmpresultinterface)
+| **start**     | `UseICMPStartParamsInterface`     | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
 | **stop**      | `() => void`                      |
 #
 ### isReachable
@@ -203,7 +203,7 @@ It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 | ------------- | -------------- | -------------------------------------------------------------------------------------- |
 | `count`       | `number`       | Count must be larger than 0
 | `interval`    | `number`       | Value in milliseconds
-|               |                | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
+| …             |                | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 
 #### PingStatus
 | Member                         | Value          | Remarks                                                                              |
