@@ -14,7 +14,7 @@ export class ICMP {
 	readonly timeout: number = 1000
 	readonly ttl: number = 54
 
-	static NOECHO_TTL = -1
+	static NO_ECHO_TTL = -1
 
 	constructor(data: ICMPConstructorDataInterface) {
 		this.host = data.host
