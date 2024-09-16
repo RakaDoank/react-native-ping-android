@@ -16,7 +16,7 @@ import {
 } from 'react-native'
 
 import {
-	NOECHO_RTT,
+	NO_ECHO_RTT,
 	PingStatus,
 	useICMP,
 } from 'react-native-ping-android'
@@ -253,7 +253,7 @@ function Item({
 			</View>
 			<View style={ Styles.itemCol }>
 				<Text style={[Styles.itemText, textStyle, Styles.itemTextAlignRight]}>
-					{ rtt > NOECHO_RTT ? rtt : mapStatusToText[status] }
+					{ rtt > NO_ECHO_RTT ? rtt : mapStatusToText[status] }
 				</Text>
 			</View>
 		</View>
