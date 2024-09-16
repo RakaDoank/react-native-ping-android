@@ -130,7 +130,7 @@ Otherwise, result will return with PingStatus.INVALID_ARG
 ```
 
 #### References
-#### - Returns: UseICMPInterface
+#### - Returns: [UseICMPInterface](#useicmpinterface)
 | Properties    | Type                              | Remarks                                                                            |
 | ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
 | **isRunning** | `boolean`                         |
