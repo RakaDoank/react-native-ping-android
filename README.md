@@ -5,6 +5,11 @@ Measure the round-trip time (RTT) by using ICMP echo request packets to the inte
 
 ## Installation
     npm install react-native-ping-android
+
+or with Yarn
+
+    yarn add react-native-ping-android
+
 🚀 This library is supported in New Architecture (Turbo Modules)
 
 ## APIs
@@ -203,7 +208,7 @@ It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 | ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `count`       | `number`       | Count must be larger than 0. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
 | `interval`    | `number`       | Value in milliseconds and must be larger 0 and larger than the timeout. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
-| …             |                | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
+| …             | …              | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 
 #### PingStatus
 | Member                         | Value          | Remarks                                                                              |
