@@ -43,7 +43,7 @@ export default function App(): React.JSX.Element {
 }
 ```
 #### References
-#### - Constructors: (data: [ICMPConstructorDataInterface](README.md#icmpconstructordatainterface))
+#### - Constructors: (data: [ICMPConstructorDataInterface](#icmpconstructordatainterface))
 | Data Properties | Type                              | Required  | Default Value | Remarks                                                                            |
 | --------------- | --------------------------------- | --------- | ------------- | ---------------------------------------------------------------------------------- |
 | **host**        | `string`                          | Yes       |               | valid host, e.g. 1.1.1.1 or guthib.com. Invalid host or unknown service will return ping result with `PingStatus.UNKNOWN_HOST` status                                                                                                                                                                              |
@@ -54,7 +54,7 @@ export default function App(): React.JSX.Element {
 #### - Methods
 | Method         | Return                                                          | Remarks                                                                                                               |
 | -------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **ping**       | [`Promise<ICMPResultInterface>`](README.md#icmpresultinterface) | Run the ICMP ping with arguments that has been defined from constructor. This method will return with `PingStatus.ECHOING` status if the method is invoked again while the previous process is still running.                                                                                                                                       |
+| **ping**       | [`Promise<ICMPResultInterface>`](#icmpresultinterface) | Run the ICMP ping with arguments that has been defined from constructor. This method will return with `PingStatus.ECHOING` status if the method is invoked again while the previous process is still running.                                                                                                                                                 |
 | **cancel**     | `void`                         | Cancel current ICMP request. This method returns nothing. However the `ping` method which invoked before will return `PingStatus.CANCELLED` status. This method does nothing if there is no ICMP requests running.                                                                                                                                                              |
 
 #### - Properties
@@ -68,8 +68,8 @@ export default function App(): React.JSX.Element {
 #### - Static Members
 | Static Member       | Type              | Value             | Remarks                                                                                                     |
 | ------------------- | ----------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- |
-| **NO_ECHO_RTT**     | number            | -1                | Just an constant whenever the status of ping result is not `PingStatus.ECHO`. It is used in the rtt result. |
-| **NO_ECHO_TTL**     | number            | -1                | Just an constant whenever the status of ping result is not `PingStatus.ECHO`. It is used in the ttl result. |
+| **NO_ECHO_RTT**     | `number`          | -1                | Just an constant whenever the status of ping result is not `PingStatus.ECHO`. It is used in the rtt result. |
+| **NO_ECHO_TTL**     | `number`          | -1                | Just an constant whenever the status of ping result is not `PingStatus.ECHO`. It is used in the ttl result. |
 
 This API doesn't provide the count and interval functional arguments like in Windows/Darwin/Linux terminal.  
 If you want those, you can use the `useICMP()` React hook or you can implement your own interval and counter with this class. Feel free to create your own convinience.
@@ -179,7 +179,7 @@ If the host argument was given with a host name, this host name will be remember
 | ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
 | `rtt`         | `number`                          | When the `status` is not `PingStatus.ECHO`, the value will be -1 (`NO_ECHO_RTT`)
 | `ttl`         | `number`                          | When the `status` is not `PingStatus.ECHO`, the value will be -1 (`NO_ECHO_TTL`)
-| `status`      | `PingStatus`                      | Full references at [PingStatus](README.md#pingstatus)
+| `status`      | `PingStatus`                      | Full references at [PingStatus](#pingstatus)
 
 #### ICMPConstructorDataInterface
 | Properties    | Type                                | Remarks                                                                                                        |
@@ -193,17 +193,17 @@ If the host argument was given with a host name, this host name will be remember
 | Properties    | Type                                          | Remarks                                                                                                        |
 | ------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `isRunning`   | `boolean`                                     | A React state                                                                                                  |
-| `result`      | `ICMPResultInterface`                         | See [ICMPResultInterface](README.md#icmpresultinterface)
-| `start`       | `(data: UseICMPStartParamsInterface) => void` | See [UseICMPStartParamsInterface](README.md#useicmpstartparamsinterface)
+| `result`      | `ICMPResultInterface`                         | See [ICMPResultInterface](#icmpresultinterface)
+| `start`       | `(data: UseICMPStartParamsInterface) => void` | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
 | `stop`        | `() => void`                                  | Stop the current running process. It does nothing when there is no processes.
 
 #### UseICMPStartParamsInterface
-It extends [ICMPConstructorDataInterface](README.md#icmpconstructordatainterface)
+It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 | Properties    | Type           | Remarks                                                                                |
 | ------------- | -------------- | -------------------------------------------------------------------------------------- |
 | `count`       | `number`       | Count must be larger than 0
 | `interval`    | `number`       | Value in milliseconds
-|               |                | other props from [ICMPConstructorDataInterface](README.md#icmpconstructordatainterface)
+|               |                | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 
 #### PingStatus
 | Member                         | Value          | Remarks                                                                              |
