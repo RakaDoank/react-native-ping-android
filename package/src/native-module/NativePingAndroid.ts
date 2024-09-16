@@ -30,10 +30,10 @@ export interface Spec extends TurboModule {
 	isReachable: (
 		host: string,
 		timeout?: Int32,
-	) => Promise<boolean>,
+	) => Promise<boolean | null>,
 	getHostName: (
 		host: string,
-	) => Promise<string>,
+	) => Promise<string | null>,
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNPingAndroid')
