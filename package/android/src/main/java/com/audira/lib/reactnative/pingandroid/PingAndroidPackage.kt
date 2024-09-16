@@ -27,7 +27,6 @@ class PingAndroidPackage : TurboReactPackage() {
 					PingAndroidSpec.NAME,
 					false,
 					false,
-					true,
 					false,
 					BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
 				)
