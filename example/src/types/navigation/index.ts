@@ -18,7 +18,7 @@ export type {
 
 export type NavigationStacks = {
 	ping_controller?: never,
-	ping_runner: Omit<UseICMPStartParamsInterface, 'startOnMount'>,
+	ping_runner: UseICMPStartParamsInterface,
 
 	/**
 	 * Just an example how to strict type the navigation argument
