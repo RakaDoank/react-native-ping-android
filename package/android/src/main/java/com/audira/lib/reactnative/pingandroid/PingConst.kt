@@ -1,7 +1,7 @@
 package com.audira.lib.reactnative.pingandroid
 
 /**
- * Intentionally not using enum for statuses
+ * Intentionally not using enum for these constants
  * https://developer.android.com/topic/performance/reduce-apk-size#remove-enums
  *
  * Also intentionally not using the object class only for a namespace
@@ -17,8 +17,4 @@ const val C_STATUS_UNKNOWN_HOST			= -2
 const val C_STATUS_INVALID_ARG			= -3
 const val C_STATUS_UNKNOWN_FAILURE		= -4
 
-/**
- * -----
- */
-
-const val C_NOECHO_RTT = -1e0
+const val C_NO_ECHO_RTT					= -1e0

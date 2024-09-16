@@ -1,11 +1,11 @@
 package com.audira.lib.reactnative.pingandroid.icmp
 
+import com.audira.lib.reactnative.pingandroid.C_NO_ECHO_RTT
 import com.audira.lib.reactnative.pingandroid.C_STATUS_ECHO
 import com.audira.lib.reactnative.pingandroid.C_STATUS_ECHOING
 import com.audira.lib.reactnative.pingandroid.C_STATUS_TIMEDOUT
 import com.audira.lib.reactnative.pingandroid.C_STATUS_CANCELLED
 import com.audira.lib.reactnative.pingandroid.C_STATUS_UNKNOWN_FAILURE
-import com.audira.lib.reactnative.pingandroid.C_NOECHO_RTT
 import com.audira.lib.reactnative.pingandroid.C_STATUS_INVALID_ARG
 import com.audira.lib.reactnative.pingandroid.C_STATUS_UNKNOWN_HOST
 
@@ -14,7 +14,7 @@ import com.facebook.react.bridge.WritableMap
 
 typealias Result = WritableMap
 
-private const val C_NOECHO_TTL = -1
+private const val C_NO_ECHO_TTL = -1
 
 /**
  * Initially, it was using Data Class which is a better readability with namespace-like and
@@ -35,48 +35,48 @@ fun resultEcho(rtt: Double, ttl: Int): Result {
 
 fun resultEchoing(): Result {
 	return createResult(
-		rtt = C_NOECHO_RTT,
-		ttl = C_NOECHO_TTL,
+		rtt = C_NO_ECHO_RTT,
+		ttl = C_NO_ECHO_TTL,
 		status = C_STATUS_ECHOING,
 	)
 }
 
 fun resultTimedOut(): Result {
 	return createResult(
-		rtt = C_NOECHO_RTT,
-		ttl = C_NOECHO_TTL,
+		rtt = C_NO_ECHO_RTT,
+		ttl = C_NO_ECHO_TTL,
 		status = C_STATUS_TIMEDOUT,
 	)
 }
 
 fun resultCancelled(): Result {
 	return createResult(
-		rtt = C_NOECHO_RTT,
-		ttl = C_NOECHO_TTL,
+		rtt = C_NO_ECHO_RTT,
+		ttl = C_NO_ECHO_TTL,
 		status = C_STATUS_CANCELLED,
 	)
 }
 
 fun resultUnknownFailure(): Result {
 	return createResult(
-		rtt = C_NOECHO_RTT,
-		ttl = C_NOECHO_TTL,
+		rtt = C_NO_ECHO_RTT,
+		ttl = C_NO_ECHO_TTL,
 		status = C_STATUS_UNKNOWN_FAILURE,
 	)
 }
 
 fun resultInvalidArg(): Result {
 	return createResult(
-		rtt = C_NOECHO_RTT,
-		ttl = C_NOECHO_TTL,
+		rtt = C_NO_ECHO_RTT,
+		ttl = C_NO_ECHO_TTL,
 		status = C_STATUS_INVALID_ARG,
 	)
 }
 
 fun resultUnknownHost(): Result {
 	return createResult(
-		rtt = C_NOECHO_RTT,
-		ttl = C_NOECHO_TTL,
+		rtt = C_NO_ECHO_RTT,
+		ttl = C_NO_ECHO_TTL,
 		status = C_STATUS_UNKNOWN_HOST,
 	)
 }
