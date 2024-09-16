@@ -1,5 +1,9 @@
 import NativeModule from '../native-module'
 
+import {
+	NO_ECHO_RTT,
+} from '../ping-const'
+
 import type {
 	ICMPConstructorDataInterface,
 } from './types'
@@ -14,6 +18,7 @@ export class ICMP {
 	readonly timeout: number = 1000
 	readonly ttl: number = 54
 
+	static NO_ECHO_RTT = NO_ECHO_RTT
 	static NO_ECHO_TTL = -1
 
 	constructor(data: ICMPConstructorDataInterface) {
