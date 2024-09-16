@@ -26,6 +26,14 @@ export interface Spec extends TurboModule {
 	icmpStop: (
 		eventId: string,
 	) => void,
+
+	isReachable: (
+		host: string,
+		timeout?: Int32,
+	) => Promise<boolean>,
+	getHostName: (
+		host: string,
+	) => Promise<string>,
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('RNPingAndroid')

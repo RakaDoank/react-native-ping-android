@@ -8,6 +8,8 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactMethod
 
+import java.net.InetAddress
+
 class PingAndroid (
 	reactContext: ReactApplicationContext,
 ) : PingAndroidSpec(reactContext) {
@@ -78,6 +80,33 @@ class PingAndroid (
 		eventId: String,
 	) {
 		mapICMP[eventId]?.cancel()
+	}
+
+	@ReactMethod
+	override fun isReachable(
+		host: String,
+		timeout: Double?,
+		promise: Promise,
+	) {
+		try {
+			val bool = InetAddress.getByName(host).isReachable(timeout?.toInt() ?: 10000)
+			promise.resolve(bool)
+		} finally {
+			promise.resolve(null)
+		}
+	}
+
+	@ReactMethod
+	override fun getHostName(
+		host: String,
+		promise: Promise,
+	) {
+		try {
+			val hostName = InetAddress.getByName(host).hostName
+			promise.resolve(hostName)
+		} finally {
+			promise.resolve(null)
+		}
 	}
 
 }

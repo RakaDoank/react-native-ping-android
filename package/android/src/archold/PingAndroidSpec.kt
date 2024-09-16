@@ -25,4 +25,15 @@ abstract class PingAndroidSpec internal constructor(context: ReactApplicationCon
 		eventId: String,
 	)
 
+	abstract fun isReachable(
+		host: String,
+		timeout: Double?,
+		promise: Promise,
+	)
+
+	abstract fun getHostName(
+		host: String,
+		promise: Promise,
+	)
+
 }
