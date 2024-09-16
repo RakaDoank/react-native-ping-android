@@ -134,8 +134,8 @@ Otherwise, result will return with PingStatus.INVALID_ARG
 | Properties    | Type                              | Remarks                                                                            |
 | ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
 | **isRunning** | `boolean`                         |
-| **result**    | `ICMPResultInterface`             | Full detail at Definitions
-| **start**     | `UseICMPStartParamsInterface`     | Full detail at Definitions
+| **result**    | `ICMPResultInterface`             | See [ICMPResultInterface](#icmpresultinterface)
+| **start**     | `UseICMPStartParamsInterface`     | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
 | **stop**      | `() => void`                      |
 #
 ### isReachable
@@ -185,7 +185,7 @@ If the host argument was given with a host name, this host name will be remember
 | Properties    | Type                                | Remarks                                                                                                        |
 | ------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `host`        | `string`                            | Can either be a machine name, such as "guthib.com", or a textual representation of its IP address.             |
-| `packetSize`  | `number` \| `null` \| `undefined`   | Value in bytes. If it smaller than zero, the promise result will returns with `PingStatus.INVALID_ARG` status.
+| `packetSize`  | `number` \| `null` \| `undefined`   | Value in bytes. If it smaller than zero, the promise result will be returned with `PingStatus.INVALID_ARG` status.
 | `ttl`         | `number` \| `null` \| `undefined`   | [time-to-live](https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/)
 | `timeout`     | `number` \| `null` \| `undefined`   | Value in milliseconds.
 
@@ -199,19 +199,25 @@ If the host argument was given with a host name, this host name will be remember
 
 #### UseICMPStartParamsInterface
 It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
-| Properties    | Type           | Remarks                                                                                |
-| ------------- | -------------- | -------------------------------------------------------------------------------------- |
-| `count`       | `number`       | Count must be larger than 0
-| `interval`    | `number`       | Value in milliseconds
-|               |                | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
+| Properties    | Type           | Remarks                                                                                                                                        |
+| ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `count`       | `number`       | Count must be larger than 0. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
+| `interval`    | `number`       | Value in milliseconds and must be larger 0 and larger than the timeout. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
+| …             |                | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 
 #### PingStatus
 | Member                         | Value          | Remarks                                                                              |
 | ------------------------------ | -------------- | ------------------------------------------------------------------------------------ |
-| `ECHO`                         | `2`            |
+| `ECHO`                         | `2`            | Success
 | `ECHOING`                      | `1`            | When the `ping` method or `start` is invoked when the previous process still running
 | `TIMEDOUT`                     | `0`            |
 | `CANCELLED`                    | `-1`           |
 | `UNKNOWN_HOST`                 | `-2`           |
 | `INVALID_ARG`                  | `-3`           | Invalid argument such as illegal packet size, ttl out of range.
 | `UNKNOWN_FAILURE`              | `-4`           |
+#
+
+## Android Emulator Limitations
+Depending on the environment, the emulator might not be able to support other protocols (such as ICMP, used for "ping"). Currently, the emulator does not support IGMP or multicast. See [Local networking limitations](https://developer.android.com/studio/run/emulator-networking#networkinglimitations)
+
+Instead, you can use Android physical device and run React Native app in it.
