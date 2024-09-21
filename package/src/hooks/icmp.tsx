@@ -15,7 +15,6 @@ import type {
 } from '../ICMP/types'
 
 import {
-	NO_ECHO_RTT,
 	PingStatus,
 } from '../ping-const'
 
@@ -103,7 +102,7 @@ export function useICMP(): UseICMPInterface {
 				// Rest validations are done by the native module
 			) {
 				setResult({
-					rtt: NO_ECHO_RTT,
+					rtt: ICMP.NO_ECHO_RTT,
 					ttl: ICMP.NO_ECHO_TTL,
 					status: PingStatus.INVALID_ARG,
 				})
@@ -117,6 +116,12 @@ export function useICMP(): UseICMPInterface {
 				} else {
 					ping()
 				}
+			} else {
+				setResult({
+					rtt: ICMP.NO_ECHO_RTT,
+					ttl: ICMP.NO_ECHO_TTL,
+					status: PingStatus.ECHOING,
+				})
 			}
 		}, [
 			ping,
