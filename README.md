@@ -198,7 +198,7 @@ If the host argument was given with a host name, this host name will be remember
 | Properties    | Type                                          | Remarks                                                                                                        |
 | ------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `isRunning`   | `boolean`                                     | A React state                                                                                                  |
-| `result`      | `ICMPResultInterface`                         | See [ICMPResultInterface](#icmpresultinterface)
+| `result`      | `ICMPResultInterface` \| `undefined`          | See [ICMPResultInterface](#icmpresultinterface)
 | `start`       | `(data: UseICMPStartParamsInterface) => void` | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
 | `stop`        | `() => void`                                  | Stop the current running process. It does nothing when there is no processes.
 
