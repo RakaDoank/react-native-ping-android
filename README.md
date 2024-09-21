@@ -207,7 +207,7 @@ It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 | Properties    | Type           | Remarks                                                                                                                                        |
 | ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `count`       | `number`       | Count must be larger than 0. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
-| `interval`    | `number`       | Value in milliseconds and must be larger 0 and larger than the timeout. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
+| `interval`    | `number`       | Value in milliseconds and must be larger than 0 and larger than the timeout. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
 | …             | …              | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 
 #### PingStatus
@@ -223,9 +223,6 @@ It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
 #
 
 ## Android Emulator Limitations
-Depending on the environment, the emulator might not be able to support other protocols (such as ICMP, used for "ping"). Currently, the emulator does not support IGMP or multicast. See [Local networking limitations](https://developer.android.com/studio/run/emulator-networking#networkinglimitations).
+Depending on the environment, the emulator might not be able to support other protocols (such as ICMP, used for "ping"). See [Local networking limitations](https://developer.android.com/studio/run/emulator-networking#networkinglimitations).
 
 Instead, you can use Android physical device and run React Native app in it.
-
-## Personal note about iOS support
-I don't have any Mac devices😭
