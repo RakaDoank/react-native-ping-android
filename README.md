@@ -31,7 +31,7 @@ export default function App(): React.JSX.Element {
                 icmp: new ICMP({ host: '1.1.1.1', packetSize: 64, timeout: 2000 }),
             }),
 
-        [result, setResult> =
+        [result, setResult] =
             useState<ICMPResultInterface | null>(null)
 
     const onPress = async () => {
