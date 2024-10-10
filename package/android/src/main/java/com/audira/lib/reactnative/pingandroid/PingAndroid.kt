@@ -24,10 +24,11 @@ class PingAndroid (
 			private fun icmpCancel() {
 				try {
 					val last = mapICMP.entries.last()
-					mapICMP[last.key]?.cancel()
-					mapICMP.remove(last.key)
+					mapICMP[last.key]?.cancel {
+						mapICMP.remove(last.key)
+					}
 				} catch(err: NoSuchElementException) {
-					// do nothing
+					// does nothing
 				}
 			}
 
@@ -61,7 +62,7 @@ class PingAndroid (
 			mapICMP[eventId] = ICMP(
 				host = host,
 				packetSize = packetSize.toInt(),
-				timeout = timeout.toLong() - 50L,
+				timeout = timeout.toLong(),
 				ttl = ttl.toInt(),
 				promise = promise,
 			)
@@ -79,7 +80,9 @@ class PingAndroid (
 	override fun icmpStop(
 		eventId: String,
 	) {
-		mapICMP[eventId]?.cancel()
+		mapICMP[eventId]?.cancel {
+			mapICMP.remove(eventId)
+		}
 	}
 
 	@ReactMethod
