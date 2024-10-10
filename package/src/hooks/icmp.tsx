@@ -41,12 +41,14 @@ export function useICMP(): UseICMPInterface {
 				icmp: ICMP | null,
 				counter: number,
 				counterLimit: number,
-				intervalHandler: ReturnType<typeof setInterval> | null,
+				intervalValue: number | null,
+				intervalID: ReturnType<typeof setInterval> | null,
 			}>({
 				icmp: null,
 				counter: 0,
 				counterLimit: 1,
-				intervalHandler: null,
+				intervalValue: null,
+				intervalID: null,
 			}),
 
 		[result, setResult] =
@@ -66,12 +68,6 @@ export function useICMP(): UseICMPInterface {
 				intervalInterruptStatuses.indexOf(res.status) > -1 ||
 				ref.current.counter === ref.current.counterLimit
 			) {
-				if(ref.current.intervalHandler) {
-					clearInterval(ref.current.intervalHandler)
-					ref.current.intervalHandler = null
-				}
-				ref.current.icmp = null
-				ref.current.counter = 0
 				setIsRunning(false)
 			}
 		}
@@ -107,15 +103,13 @@ export function useICMP(): UseICMPInterface {
 					status: PingStatus.INVALID_ARG,
 				})
 				setIsRunning(false)
-			} else if(!ref.current.icmp && !ref.current.intervalHandler) {
+			} else if(!ref.current.icmp) {
 				ref.current.icmp = new ICMP(icmpData)
 				ref.current.counterLimit = count ?? 1
-				setIsRunning(true)
 				if(typeof interval === 'number') {
-					ref.current.intervalHandler = setInterval(ping, interval)
-				} else {
-					ping()
+					ref.current.intervalValue = interval
 				}
+				setIsRunning(true)
 			} else {
 				setResult({
 					rtt: ICMP.NO_ECHO_RTT,
@@ -123,31 +117,43 @@ export function useICMP(): UseICMPInterface {
 					status: PingStatus.ECHOING,
 				})
 			}
-		}, [
-			ping,
-		])
+		}, [])
 
 	const stop: UseICMPInterface['stop']
 		= useCallback(() => {
-			if(ref.current.icmp && ref.current.intervalHandler) {
-				ref.current.icmp.cancel()
-				clearInterval(ref.current.intervalHandler)
-				ref.current.icmp = null
-				ref.current.counter = 0
-				ref.current.intervalHandler = null
+			if(ref.current.icmp && ref.current.intervalID) {
 				setIsRunning(false)
 			}
 		}, [])
 
 	useEffect(() => {
-		const { intervalHandler } = ref.current
+		let id: ReturnType<typeof setInterval> | null = null
 
-		return () => {
-			if(intervalHandler) {
-				clearInterval(intervalHandler)
+		if(isRunning && typeof ref.current.intervalValue === 'number') {
+			id = setInterval(ping, ref.current.intervalValue)
+		} else if(isRunning) {
+			ping()
+		} else {
+			ref.current.icmp?.cancel()
+			ref.current.icmp = null
+			ref.current.counter = 0
+			if(id) {
+				clearInterval(id)
+				id = null
 			}
 		}
-	}, [])
+
+		ref.current.intervalID = id
+
+		return () => {
+			if(id) {
+				clearInterval(id)
+			}
+		}
+	}, [
+		ping,
+		isRunning,
+	])
 
 	return {
 		isRunning,
