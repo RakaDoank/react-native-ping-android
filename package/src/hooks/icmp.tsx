@@ -66,7 +66,8 @@ export function useICMP(): UseICMPInterface {
 
 			if(
 				intervalInterruptStatuses.indexOf(res.status) > -1 ||
-				ref.current.counter === ref.current.counterLimit
+				ref.current.counter === ref.current.counterLimit ||
+				ref.current.intervalValue === null
 			) {
 				setIsRunning(false)
 			}
