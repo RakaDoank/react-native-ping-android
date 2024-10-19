@@ -136,12 +136,12 @@ Otherwise, result will return with PingStatus.INVALID_ARG
 
 #### References
 #### - Returns: [UseICMPInterface](#useicmpinterface)
-| Properties    | Type                              | Remarks                                                                            |
-| ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
-| **isRunning** | `boolean`                         |
-| **result**    | `ICMPResultInterface`             | See [ICMPResultInterface](#icmpresultinterface)
-| **start**     | `UseICMPStartParamsInterface`     | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
-| **stop**      | `() => void`                      |
+| Properties    | Type                                          | Remarks                                                                            |
+| ------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **isRunning** | `boolean`                                     |
+| **result**    | `ICMPResultInterface`                         | See [ICMPResultInterface](#icmpresultinterface)
+| **start**     | `(data: UseICMPStartParamsInterface) => void` | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
+| **stop**      | `() => void`                                  |
 #
 ### isReachable
 `(host: string, timeout?: number) => Promise<boolean | null>`
