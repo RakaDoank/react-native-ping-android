@@ -32,6 +32,7 @@
 		"eol-last": "off",
 
 		// https://eslint.org/docs/latest/rules/no-unused-vars
+		// overriden by @typescript-eslint/no-unused-vars
 		"no-unused-vars": "off",
 
 		// https://eslint.org/docs/latest/rules/no-shadow-restricted-names
@@ -122,8 +123,7 @@
 			"rules": {
 				"no-undef": "off",
 				"no-unused-vars": "error",
-				"@typescript-eslint/no-require-imports": "off",
-				"@typescript-eslint/no-unused-vars": "off"
+				"@typescript-eslint/no-require-imports": "off"
 			}
 		},
 		{
@@ -132,8 +132,7 @@
 				"*.tsx"
 			],
 			"rules": {
-				"import/no-unresolved": "off",
-				"@typescript-eslint/no-unused-vars": "off"
+				"import/no-unresolved": "off"
 			}
 		}
 	],
