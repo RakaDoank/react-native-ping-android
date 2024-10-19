@@ -4,6 +4,8 @@
 	"extends": [
 		"@react-native",
 
+		"plugin:react/jsx-runtime",
+
 		"plugin:@typescript-eslint/recommended",
 
 		// Eslint Plugin Import
