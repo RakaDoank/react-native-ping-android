@@ -87,7 +87,7 @@ export function PingRunnerScreen({
 	])
 
 	useEffect(() => {
-		if(result && ref.current.isRunning) {
+		if(result) {
 			setData(_data => _data.concat({ ...result }))
 		}
 	}, [
