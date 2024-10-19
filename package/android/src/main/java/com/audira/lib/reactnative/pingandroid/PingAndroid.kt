@@ -70,6 +70,7 @@ class PingAndroid (
 				mapICMP.remove(eventId)
 			}
 		} else {
+			mapICMP.remove(eventId)
 			promise.resolve(
 				ICMP_resultEchoing()
 			)
