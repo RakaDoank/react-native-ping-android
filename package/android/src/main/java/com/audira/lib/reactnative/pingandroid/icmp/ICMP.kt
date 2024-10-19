@@ -4,120 +4,135 @@ import com.facebook.react.bridge.Promise
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.runBlocking
 
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 
 private const val STR_END = "END"
 private const val STR_ERR = "ERR"
 
 class ICMP(
-	private val host: String,
+	host: String,
 
 	/**
 	 * in bytes
 	 */
-	private val packetSize: Int = 56,
+	packetSize: Int = 56,
 
 	/**
 	 * in milliseconds
 	 */
-	private val timeout: Long = 1000L,
+	private val timeout: Long = 1000,
 
-	private val ttl: Int = 54,
+	ttl: Int = 54,
 	private val promise: Promise,
 ) {
 
-	private var coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-	private var reader: BufferedReader? = null
-	private var readerErr: BufferedReader? = null
+	private var coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+	private var timeoutJob: Job? = null
+	private val processBuilder = ProcessBuilder(
+		"/system/bin/ping",
+		"-s", "$packetSize",
+		"-c", "1",
+		"-w", "${(timeout / 1000).let { if(it < 1) 1 else it }}",
+		"-t", "$ttl",
+		host,
+	)
 	private var process: Process? = null
 
 	private fun pingExecute(): Flow<String> {
-		return flow {
-			if(process == null && reader == null && readerErr == null) {
-				val log = StringBuilder()
+		return callbackFlow {
+			val log = StringBuilder()
 
-				try {
-					process = Runtime.getRuntime().exec(
-						"/system/bin/ping -s $packetSize -c 1 -W ${timeout.toInt() / 1000} -t ${ttl.toInt()} $host"
-					)
-					reader = BufferedReader(
-						InputStreamReader(process!!.inputStream)
-					)
-					readerErr = BufferedReader(
-						InputStreamReader(process!!.errorStream)
-					)
-					reader!!.forEachLine {
-						log.append("$it\n")
-					}
-					readerErr!!.forEachLine {
-						log.append("$STR_ERR $it\n")
-					}
-					process!!.waitFor()
-
-					log.append(STR_END)
-					emit(log.toString())
-				} catch(e: IOException) {
-					log.append(STR_END)
-					emit(log.toString())
+			try {
+				process = processBuilder.start()
+				val reader = BufferedReader(
+					InputStreamReader(process!!.inputStream)
+				)
+				val readerErr = BufferedReader(
+					InputStreamReader(process!!.errorStream)
+				)
+				while(
+					!reader.readLine().also {
+						if(!it.isNullOrBlank()) {
+							log.append("$it\n")
+						}
+					}.isNullOrBlank()
+				) {
+					// nothing
 				}
+				while(
+					!readerErr.readLine().also {
+						if(!it.isNullOrBlank()) {
+							log.append("$STR_ERR $it\n")
+						}
+					}.isNullOrBlank()
+				) {
+					// nothing
+				}
+			} finally {
+				process?.destroy()
+				log.append(STR_END)
+				trySend(log.toString())
+				close()
+			}
+
+			awaitClose {
+				process?.destroy()
 			}
 		}
 			.flowOn(Dispatchers.IO)
-	}
-
-	private fun clear() {
-		process?.destroy()
-		reader?.close()
-		readerErr?.close()
 	}
 
 	fun ping(
 		onFinish: () -> Unit,
 	) {
 		coroutineScope.launch {
-			try {
-				withTimeout(timeout) {
-					pingExecute()
-						.takeWhile {
-							it.slice(it.length - 3..<it.length) == STR_END
-						}
-						.collect {
-							if (it.slice(STR_END.indices) == STR_END) {
-								// the string are only `END`
-								promise.resolve(
-									resultUnknownFailure()
-								)
-							} else if (it.slice(STR_ERR.indices) == STR_ERR) {
-								// the string started with `ERR` (Error Stream)
-								promise.resolve(
-									createResultFromErrorLine(it)
-								)
-							} else {
-								promise.resolve(
-									createResultFromLine(it)
-								)
-							}
-							clear()
-							onFinish()
-						}
+			pingExecute()
+				.first {
+					if (it.slice(STR_END.indices) == STR_END) {
+						// the string are only `END`
+						promise.resolve(
+							resultUnknownFailure()
+						)
+					} else if (it.slice(STR_ERR.indices) == STR_ERR) {
+						// the string started with `ERR` (Error Stream)
+						promise.resolve(
+							createResultFromErrorLine(it)
+						)
+					} else {
+						promise.resolve(
+							createResultFromLine(it)
+						)
+					}
+					timeoutJob?.cancel()
+					cancel()
+					onFinish()
+					true
 				}
-			} catch (e: TimeoutCancellationException) {
-				promise.resolve(
-					resultTimedOut()
-				)
-				clear()
-				onFinish()
+		}
+
+		runBlocking {
+			timeoutJob = launch {
+				delay(timeout)
+				try {
+					coroutineScope.cancel()
+					promise.resolve(
+						resultTimedOut()
+					)
+				} finally {
+					onFinish()
+				}
 			}
 		}
 	}
@@ -125,12 +140,15 @@ class ICMP(
 	fun cancel(
 		onCancel: () -> Unit,
 	) {
-		coroutineScope.cancel()
-		clear()
-		promise.resolve(
-			resultCancelled()
-		)
-		onCancel()
+		timeoutJob?.cancel()
+		try {
+			coroutineScope.cancel()
+			promise.resolve(
+				resultCancelled()
+			)
+		} finally {
+			onCancel()
+		}
 	}
 
 }
