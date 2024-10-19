@@ -72,8 +72,8 @@
 		}
 	},
 	"devDependencies": {
-		"@react-native/eslint-config": "0.75.3",
-		"@react-native/typescript-config": "0.75.3",
+		"@react-native/eslint-config": "0.75.4",
+		"@react-native/typescript-config": "0.75.4",
 		"@stylistic/eslint-plugin": "^2.8.0",
 		"@types/react": "^18.2.44",
 		"@typescript-eslint/eslint-plugin": "8.5.0",
@@ -84,7 +84,7 @@
 		"eslint-plugin-import": "^2.30.0",
 		"eslint-plugin-jest": "^28.8.3",
 		"react": ">=17",
-		"react-native": "^0.75.3",
+		"react-native": "^0.75.4",
 		"react-native-builder-bob": "^0.30.2",
 		"release-it": "^17.6.0",
 		"run-script-os": "^1.1.6",
