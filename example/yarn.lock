@@ -6018,10 +6018,10 @@ react-is@^18.3.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.3.1.tgz"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
 
-react-native-ping-android@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/react-native-ping-android/-/react-native-ping-android-1.0.3.tgz"
-  integrity sha512-qWMm3h12IfpMNTiSV0tfIgmBfK1vQvsNFeieVblumiiOsOpoV2fwEkN20PJH2RyI5Tg1lVpVFdqtHL7tbAZVKg==
+react-native-ping-android@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/react-native-ping-android/-/react-native-ping-android-1.2.0.tgz"
+  integrity sha512-kYM7xly5PJpQ0pgjp0p5RsvYPSvmSfINpM5PPlDcCf2KCP0UmXUXdTA3hvSKcVLNNE/BjlPNsX9bapApv6YzdQ==
 
 react-native-safe-area-context@^4.11.0, "react-native-safe-area-context@>= 3.0.0":
   version "4.11.0"
