@@ -21,10 +21,11 @@ jobs:
       uses: pnpm/action-setup@v4
       with:
         version: 10
-    - name: Use Node.js ${{ matrix.node_version }}
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        registry-url: https://registry.npmjs.org/
         cache: 'pnpm'
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
@@ -33,7 +34,7 @@ jobs:
     # https://github.com/pnpm/pnpm/issues/4937
     - name: Set up special NPM voodoo
       run: |
-        echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
     - name: Release to npm registry
       run: |
         npm run package-prepack
