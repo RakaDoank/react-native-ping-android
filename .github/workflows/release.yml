@@ -35,6 +35,7 @@ jobs:
     - name: Set up special NPM voodoo
       run: |
         echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+        echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
     - name: Release to npm registry
       run: |
         npm run package-prepack
