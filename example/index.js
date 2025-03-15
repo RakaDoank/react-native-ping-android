@@ -1,13 +1,13 @@
 import {
 	AppRegistry,
-} from 'react-native';
+} from 'react-native'
 
 import {
-	AppBootstrap,
-} from './src/bootstraps/app';
+	Example,
+} from './src/example'
 
 import {
 	name as appName,
 } from './app.json';
 
-AppRegistry.registerComponent(appName, () => AppBootstrap);
+AppRegistry.registerComponent(appName, () => Example);

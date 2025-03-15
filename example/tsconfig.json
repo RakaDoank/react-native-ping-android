@@ -1,12 +1,10 @@
 {
-	"extends": "./node_modules/react-native-ping-android/configs/typescript/tsconfig.json",
+	"extends": "@react-native/typescript-config/tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
-		}
-	},
-	"exclude": [
-		"lib/**"
-	]
+			"@/*": ["./src/*"],
+			"react-native-ping-android": ["../package/src/index"]
+		},
+		"verbatimModuleSyntax": true
+	}
 }

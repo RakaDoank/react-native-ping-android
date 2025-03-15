@@ -1,0 +1,36 @@
+{
+	"name": "react-native-ping-android",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"code-check": "npm run type-check && npm run lint",
+		"lint": "eslint .",
+		"package-postpack": "npm run ts-node-esm ./scripts/package-postpack",
+		"package-prepack": "npm run ts-node-esm ./scripts/package-prepack",
+		"publish-package": "npm run package-prepack",
+		"ts-node-esm": "node --loader ts-node/esm -r tsconfig-paths/register",
+		"tsx": "tsx",
+		"type-check": "tsc --noEmit && tsc --project example/tsconfig.json && tsc --project package/tsconfig.json",
+		"type-check-t": "tsc --noEmit && cd example && tsc && cd ../example && tsc"
+	},
+	"devDependencies": {
+		"@eslint/compat": "^1.2.7",
+		"@eslint/js": "^9.22.0",
+		"@react-native/eslint-config": "0.78.0",
+		"@stylistic/eslint-plugin": "^4.2.0",
+		"@types/node": "^22.13.10",
+		"@types/react": "^19.0.10",
+		"eslint": "9.22.0",
+		"eslint-import-resolver-typescript": "^3.8.3",
+		"eslint-plugin-import-x": "^4.6.1",
+		"eslint-plugin-react": "^7.37.4",
+		"eslint-plugin-react-native": "^5.0.0",
+		"globals": "^16.0.0",
+		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
+		"tsx": "^4.19.2",
+		"typescript": "5.8.2",
+		"typescript-eslint": "^8.26.1"
+	}
+}
