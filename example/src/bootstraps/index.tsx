@@ -1,2 +1,3 @@
-export * from './app'
-export * from './navigation'
+export {
+	Navigation as NavigationBootstrap,
+} from './navigation'

@@ -7,33 +7,17 @@ import {
 
 import {
 	ICMP,
-	type ICMPConstructorDataInterface,
 } from '../ICMP'
-
-import type {
-	ICMPResultInterface,
-} from '../ICMP/types'
 
 import {
 	PingStatus,
-} from '../ping-const'
+} from '../ping-status'
 
-export interface UseICMPStartParamsInterface extends ICMPConstructorDataInterface {
-	count?: number,
-	/**
-	 * In milliseconds
-	 */
-	interval?: number,
-}
+import type {
+	UseICMP,
+} from './types'
 
-export interface UseICMPInterface {
-	isRunning: boolean,
-	result: ICMPResultInterface | undefined,
-	start: (params: UseICMPStartParamsInterface) => void,
-	stop: () => void,
-}
-
-export function useICMP(): UseICMPInterface {
+export function useICMP(): UseICMP {
 
 	const
 		ref =
@@ -52,7 +36,7 @@ export function useICMP(): UseICMPInterface {
 			}),
 
 		[result, setResult] =
-			useState<UseICMPInterface['result']>(undefined),
+			useState<UseICMP['result']>(undefined),
 
 		[isRunning, setIsRunning] =
 			useState(false)
@@ -74,7 +58,7 @@ export function useICMP(): UseICMPInterface {
 		}
 	}, [])
 
-	const start: UseICMPInterface['start']
+	const start: UseICMP['start']
 		= useCallback(({
 			count,
 			interval,
@@ -120,7 +104,7 @@ export function useICMP(): UseICMPInterface {
 			}
 		}, [])
 
-	const stop: UseICMPInterface['stop']
+	const stop: UseICMP['stop']
 		= useCallback(() => {
 			if(ref.current.icmp && ref.current.intervalID) {
 				setIsRunning(false)
@@ -131,6 +115,7 @@ export function useICMP(): UseICMPInterface {
 		let id: ReturnType<typeof setInterval> | null = null
 
 		if(isRunning && typeof ref.current.intervalValue === 'number') {
+			// eslint-disable-next-line @typescript-eslint/no-misused-promises
 			id = setInterval(ping, ref.current.intervalValue)
 		} else if(isRunning) {
 			ping()

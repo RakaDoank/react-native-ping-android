@@ -15,17 +15,15 @@ import {
 	PingRunnerScreen,
 } from '@/screens'
 
-import {
-	type NavigationType,
+import type {
+	NavigationType,
 } from '@/types'
-
-import NestSampleNavigator from './_nest-sample'
 
 const
 	Stack =
-		createNativeStackNavigator<NavigationType.NavigationStacks>()
+		createNativeStackNavigator<NavigationType.Stacks>()
 
-export function NavigationBootstrap(): React.JSX.Element {
+export function Navigation(): React.JSX.Element {
 
 	const colorScheme = useColorScheme()
 
@@ -50,11 +48,6 @@ export function NavigationBootstrap(): React.JSX.Element {
 				<Stack.Screen
 					name="ping_runner"
 					component={ PingRunnerScreen }
-				/>
-
-				<Stack.Screen
-					name="nest_sample"
-					component={ NestSampleNavigator }
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>

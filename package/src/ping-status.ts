@@ -7,5 +7,3 @@ export enum PingStatus {
 	INVALID_ARG				= -3,
 	UNKNOWN_FAILURE			= -4,
 }
-
-export const NO_ECHO_RTT	= -1e0

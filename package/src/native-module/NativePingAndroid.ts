@@ -8,7 +8,7 @@ import type {
 } from 'react-native/Libraries/Types/CodegenTypes'
 
 import type {
-	ICMPResultInterface,
+	ICMPResult,
 } from '../ICMP/types'
 
 export interface Spec extends TurboModule {
@@ -22,7 +22,7 @@ export interface Spec extends TurboModule {
 		packetSize: Int32,
 		timeout: Int32,
 		ttl: Int32,
-	) => Promise<ICMPResultInterface>,
+	) => Promise<ICMPResult>,
 	icmpStop: (
 		eventId: string,
 	) => void,

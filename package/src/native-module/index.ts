@@ -12,10 +12,11 @@ const LINKING_ERROR =
 	'- You are not using Expo Go\n'
 
 // @ts-expect-error - Not an error. See this reference: https://github.com/react-native-community/RNNewArchitectureLibraries/blob/feat/back-turbomodule/example-library/src/index.js
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 const isTurboModuleEnabled = global.__turboModuleProxy != null
 
 const module = isTurboModuleEnabled
-	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	? require('./NativePingAndroid').default
 	: NativeModules.RNPingAndroid
 

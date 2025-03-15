@@ -21,11 +21,7 @@ import {
 	NavigationHooks,
 } from '@/hooks'
 
-import type {
-	NavigationType,
-} from '@/types'
-
-export function PingControllerScreen(_props: NavigationType.ScreenPropsInterface<'ping_controller'>): React.JSX.Element {
+export function PingControllerScreen(): React.JSX.Element {
 
 	const
 		navigation =
@@ -167,18 +163,18 @@ function TextInputPart({
 
 	return (
 		<View
-			style={[Styles.flexInitial, Styles.textInputPart, style]}
+			style={ [Styles.flexInitial, Styles.textInputPart, style] }
 		>
-			<Text style={[textStyle, Styles.textInputPartTitle]}>
+			<Text style={ [textStyle, Styles.textInputPartTitle] }>
 				{ title }
 			</Text>
 
 			<TextInput
 				{ ...textInputProps }
-				style={[
+				style={ [
 					textStyle,
 					textInputProps?.style,
-				]}
+				] }
 			/>
 		</View>
 	)

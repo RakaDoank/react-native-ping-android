@@ -26,20 +26,20 @@ import {
 } from '@/types'
 
 import type {
-	DataStateInterface,
-	ItemRendererDataInterface,
-} from './types'
+	DataState,
+	ItemRendererData,
+} from './_types'
 
 export function PingRunnerScreen({
 	route,
-}: NavigationType.ScreenPropsInterface<'ping_runner'>) {
+}: NavigationType.ScreenProps<'ping_runner'>) {
 
 	const
 		ref =
 			useRef<{
 				initialRun: boolean,
 				isRunning: boolean,
-				virtualizedList: VirtualizedList<ItemRendererDataInterface> | null,
+				virtualizedList: VirtualizedList<ItemRendererData> | null,
 			}>({
 				initialRun: false,
 				isRunning: false,
@@ -47,19 +47,19 @@ export function PingRunnerScreen({
 			}),
 
 		[data, setData] =
-			useState<DataStateInterface[]>([]),
+			useState<DataState[]>([]),
 
 		{ isRunning, result, start, stop }
 			= useICMP()
 
-	const setVirtualizedListRef: React.RefCallback<VirtualizedList<ItemRendererDataInterface>>
+	const setVirtualizedListRef: React.RefCallback<VirtualizedList<ItemRendererData>>
 		= useCallback(_ref => {
 			ref.current.virtualizedList = _ref
 		}, [])
 
 	const startHandler = useCallback(() => {
 		console.log('startHandler: ', route.params)
-		start(route.params)
+		start(route.params!)
 	}, [
 		start,
 		route.params,
@@ -112,18 +112,18 @@ export function PingRunnerScreen({
 		startHandler,
 	])
 
-	const itemGetter: NonNullable<NonNullable<VirtualizedListProps<ItemRendererDataInterface>>['getItem']>
+	const itemGetter: NonNullable<NonNullable<VirtualizedListProps<ItemRendererData>>['getItem']>
 		= useCallback((_data, index) => {
 			return {
-				host: route.params.host,
-				...data[index] as DataStateInterface,
+				host: route.params!.host,
+				...data[index],
 			}
 		}, [
 			data,
-			route.params.host,
+			route.params,
 		])
 
-	const keyExtractorHandler: NonNullable<NonNullable<VirtualizedListProps<ItemRendererDataInterface>>['keyExtractor']>
+	const keyExtractorHandler: NonNullable<NonNullable<VirtualizedListProps<ItemRendererData>>['keyExtractor']>
 		= useCallback((_item, index) => {
 			return index.toString() // it's safe just to use the index as key
 		}, [])
@@ -214,7 +214,7 @@ const Styles = StyleSheet.create({
 	},
 })
 
-const itemRenderer: NonNullable<VirtualizedListProps<ItemRendererDataInterface>>['renderItem']
+const itemRenderer: NonNullable<VirtualizedListProps<ItemRendererData>>['renderItem']
 	= itemProps => {
 
 		return (
@@ -225,7 +225,7 @@ const itemRenderer: NonNullable<VirtualizedListProps<ItemRendererDataInterface>>
 
 	}
 
-interface ItemPropsInterface extends ItemRendererDataInterface {
+interface ItemPropsInterface extends ItemRendererData {
 }
 function Item({
 	host,
@@ -246,13 +246,13 @@ function Item({
 		<View
 			style={ Styles.item }
 		>
-			<View style={[Styles.itemCol, Styles.mr2]}>
-				<Text style={[Styles.itemText, textStyle]}>
+			<View style={ [Styles.itemCol, Styles.mr2] }>
+				<Text style={ [Styles.itemText, textStyle] }>
 					{ host }
 				</Text>
 			</View>
 			<View style={ Styles.itemCol }>
-				<Text style={[Styles.itemText, textStyle, Styles.itemTextAlignRight]}>
+				<Text style={ [Styles.itemText, textStyle, Styles.itemTextAlignRight] }>
 					{ rtt > NO_ECHO_RTT ? rtt : mapStatusToText[status] }
 				</Text>
 			</View>

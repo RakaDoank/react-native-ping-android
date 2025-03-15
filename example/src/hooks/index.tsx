@@ -1,1 +1,5 @@
-export * as NavigationHooks from './navigation'
+import * as NavigationHooks from './navigation'
+
+export {
+	NavigationHooks,
+}

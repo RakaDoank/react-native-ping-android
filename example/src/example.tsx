@@ -4,9 +4,9 @@ import {
 
 import {
 	NavigationBootstrap,
-} from '../navigation'
+} from '@/bootstraps'
 
-export function AppBootstrap(): React.JSX.Element {
+export function Example() {
 
 	return (
 		<SafeAreaProvider>

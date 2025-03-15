@@ -1,1 +1,5 @@
-export type * as NavigationType from './navigation'
+import type * as NavigationType from './navigation'
+
+export type {
+	NavigationType,
+}
