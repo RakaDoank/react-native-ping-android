@@ -146,8 +146,8 @@ importers:
         specifier: 0.75.4
         version: 0.75.4
       react-native-builder-bob:
-        specifier: 0.35.2
-        version: 0.35.2(typescript@5.8.2)
+        specifier: 0.37.0
+        version: 0.37.0(typescript@5.8.2)
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -3769,9 +3769,9 @@ packages:
   react-is@19.0.0:
     resolution: {integrity: sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==}
 
-  react-native-builder-bob@0.35.2:
-    resolution: {integrity: sha512-/ehbjzO2GhDd8/noZiZVEGAVDkyZuWJ+zOrKcrNpqpoLOWhCO4y10FGIRkl5bfLvy7/2kXTwI6YnwiGIOODSGQ==}
-    engines: {node: '>= 18.0.0'}
+  react-native-builder-bob@0.37.0:
+    resolution: {integrity: sha512-CkM4csFrYtdGJoRLbPY6V8LBbOxgPZIuM0MkPaiOI2F/ASwxMAzoJu9wBw8Pyvx1p27XnrIEKPyDiTqimJ7xbA==}
+    engines: {node: '>= 20.0.0'}
     hasBin: true
 
   react-native-safe-area-context@5.3.0:
@@ -6092,7 +6092,9 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@react-native/normalize-colors@0.78.0': {}
 
@@ -9189,7 +9191,7 @@ snapshots:
 
   react-is@19.0.0: {}
 
-  react-native-builder-bob@0.35.2(typescript@5.8.2):
+  react-native-builder-bob@0.37.0(typescript@5.8.2):
     dependencies:
       '@babel/core': 7.26.10
       '@babel/plugin-transform-strict-mode': 7.25.9(@babel/core@7.26.10)

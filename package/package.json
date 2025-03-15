@@ -20,11 +20,10 @@
 	"scripts": {
 		"prepare": "bob build"
 	},
-	"source": "./src/index.ts",
+	"source": "./src/index.tsx",
 	"main": "./lib/commonjs/index.js",
 	"module": "./lib/module/index.js",
 	"types": "./lib/typescript/commonjs/src/index.d.ts",
-	"react-native": "src/index.ts",
 	"exports": {
 		".": {
 			"import": {
@@ -43,7 +42,6 @@
 		"src",
 		"lib",
 		"android",
-		"configs",
 		"!android/build",
 		"!android/gradle",
 		"!android/gradlew",
@@ -64,7 +62,7 @@
 	},
 	"devDependencies": {
 		"@react-native/typescript-config": "0.75.4",
-		"react-native-builder-bob": "0.35.2",
+		"react-native-builder-bob": "0.37.0",
 		"typescript": "5.8.2"
 	},
 	"peerDependencies": {
