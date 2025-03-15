@@ -40,7 +40,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         NPM_CONFIG_PROVENANCE: true
-      if: ${{ secrets.NPM_TOKEN != '' }}
+      if: ${{ env.NODE_AUTH_TOKEN != '' }}
       run: |
         npm run package-prepack
         pnpm publish --filter react-native-ping-android --access public --no-git-checks
