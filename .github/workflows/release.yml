@@ -31,8 +31,9 @@ jobs:
     - name: Code check
       run: npm run code-check
     - name: Release to npm registry
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         npm run package-prepack
         pnpm publish --filter react-native-ping-android --access public --no-git-checks
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_CONFIG_PROVENANCE: true
