@@ -12,6 +12,7 @@ jobs:
   release:
     name: release package
     runs-on: ubuntu-22.04
+    environment: RELEASE
     strategy:
       matrix:
         node-version: [22]
