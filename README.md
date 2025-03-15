@@ -21,7 +21,7 @@ import { Button } from 'react-native'
 
 import {
     ICMP,
-    type ICMPResultInterface,
+    type ICMPResult,
 } from 'react-native-ping-android'
 
 export default function App(): React.JSX.Element {
@@ -32,7 +32,7 @@ export default function App(): React.JSX.Element {
             }),
 
         [result, setResult] =
-            useState<ICMPResultInterface | null>(null)
+            useState<ICMPResult | null>(null)
 
     const onPress = async () => {
         const { rtt, ttl, status } = await ref.current.icmp.ping()
@@ -48,7 +48,7 @@ export default function App(): React.JSX.Element {
 }
 ```
 #### References
-#### - Constructors: (data: [ICMPConstructorDataInterface](#icmpconstructordatainterface))
+#### - Constructors: (data: [ICMPConstructorData](#icmpconstructordata))
 | Data Properties | Type                              | Required  | Default Value | Remarks                                                                            |
 | --------------- | --------------------------------- | --------- | ------------- | ---------------------------------------------------------------------------------- |
 | **host**        | `string`                          | Yes       |               | valid host, e.g. 1.1.1.1 or guthib.com. Invalid host or unknown service will return ping result with `PingStatus.UNKNOWN_HOST` status                                                                                                                                                                              |
@@ -59,7 +59,7 @@ export default function App(): React.JSX.Element {
 #### - Methods
 | Method         | Return                                                          | Remarks                                                                                                               |
 | -------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **ping**       | [`Promise<ICMPResultInterface>`](#icmpresultinterface) | Run the ICMP ping with arguments that has been defined from constructor. This method will return with `PingStatus.ECHOING` status if the method is invoked again while the previous process is still running.                                                                                                                                                 |
+| **ping**       | [`Promise<ICMPResult>`](#icmpresult) | Run the ICMP ping with arguments that has been defined from constructor. This method will return with `PingStatus.ECHOING` status if the method is invoked again while the previous process is still running.                                                                                                                                                 |
 | **cancel**     | `void`                         | Cancel current ICMP request. This method returns nothing. However the `ping` method which invoked before will return `PingStatus.CANCELLED` status. This method does nothing if there is no ICMP requests running.                                                                                                                                                              |
 
 #### - Properties
@@ -135,12 +135,12 @@ Otherwise, result will return with PingStatus.INVALID_ARG
 ```
 
 #### References
-#### - Returns: [UseICMPInterface](#useicmpinterface)
+#### - Returns: [UseICMP](#useicmp)
 | Properties    | Type                                          | Remarks                                                                            |
 | ------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **isRunning** | `boolean`                                     |
-| **result**    | `ICMPResultInterface`                         | See [ICMPResultInterface](#icmpresultinterface)
-| **start**     | `(data: UseICMPStartParamsInterface) => void` | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
+| **result**    | `ICMPResult`                         | See [ICMPResult](#icmpresult)
+| **start**     | `(data: UseICMPStartParams) => void` | See [UseICMPStartParams](#useicmpstartparams)
 | **stop**      | `() => void`                                  |
 #
 ### isReachable
@@ -179,14 +179,14 @@ If the host argument was given with a host name, this host name will be remember
 #
 
 ## Definitions
-#### ICMPResultInterface
+#### ICMPResult
 | Properties    | Type                              | Remarks                                                                            |
 | ------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
 | `rtt`         | `number`                          | When the `status` is not `PingStatus.ECHO`, the value will be -1 (`NO_ECHO_RTT`)
 | `ttl`         | `number`                          | When the `status` is not `PingStatus.ECHO`, the value will be -1 (`NO_ECHO_TTL`)
 | `status`      | `PingStatus`                      | Full references at [PingStatus](#pingstatus)
 
-#### ICMPConstructorDataInterface
+#### ICMPConstructorData
 | Properties    | Type                                | Remarks                                                                                                        |
 | ------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `host`        | `string`                            | Can either be a machine name, such as "guthib.com", or a textual representation of its IP address.             |
@@ -194,21 +194,21 @@ If the host argument was given with a host name, this host name will be remember
 | `ttl`         | `number` \| `null` \| `undefined`   | [time-to-live](https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/)
 | `timeout`     | `number` \| `null` \| `undefined`   | Value in milliseconds.
 
-#### UseICMPInterface
+#### UseICMP
 | Properties    | Type                                          | Remarks                                                                                                        |
 | ------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `isRunning`   | `boolean`                                     | A React state                                                                                                  |
-| `result`      | `ICMPResultInterface` \| `undefined`          | See [ICMPResultInterface](#icmpresultinterface)
-| `start`       | `(data: UseICMPStartParamsInterface) => void` | See [UseICMPStartParamsInterface](#useicmpstartparamsinterface)
+| `result`      | `ICMPResult` \| `undefined`          | See [ICMPResult](#icmpresult)
+| `start`       | `(data: UseICMPStartParams) => void` | See [UseICMPStartParams](#useicmpstartparams)
 | `stop`        | `() => void`                                  | Stop the current running process. It does nothing when there is no processes.
 
-#### UseICMPStartParamsInterface
-It extends [ICMPConstructorDataInterface](#icmpconstructordatainterface)
+#### UseICMPStartParams
+It extends [ICMPConstructorData](#icmpconstructordata)
 | Properties    | Type           | Remarks                                                                                                                                        |
 | ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `count`       | `number`       | Count must be larger than 0. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
 | `interval`    | `number`       | Value in milliseconds and must be larger than 0 and larger than the timeout. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
-| …             | …              | other props from [ICMPConstructorDataInterface](#icmpconstructordatainterface)
+| …             | …              | other props from [ICMPConstructorData](#icmpconstructordata)
 
 #### PingStatus
 | Member                         | Value          | Remarks                                                                              |
