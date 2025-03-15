@@ -10,8 +10,7 @@
 		"package-prepack": "npm run ts-node-esm ./scripts/package-prepack",
 		"ts-node-esm": "node --loader ts-node/esm -r tsconfig-paths/register",
 		"tsx": "tsx",
-		"type-check": "tsc --noEmit && tsc --project example/tsconfig.json && tsc --project package/tsconfig.json",
-		"type-check-t": "tsc --noEmit && cd example && tsc && cd ../example && tsc"
+		"type-check": "tsc --noEmit && tsc --project example/tsconfig.json && tsc --project package/tsconfig.json"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.7",
