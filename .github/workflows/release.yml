@@ -27,11 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
     - name: Code check
       run: npm run code-check
     - name: Release to npm registry
       run: |
+        pnpm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
         npm run package-prepack
         pnpm publish --filter react-native-ping-android --access public --no-git-checks
       env:
