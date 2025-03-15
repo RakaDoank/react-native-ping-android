@@ -8,7 +8,7 @@
 		"lint": "eslint .",
 		"package-postpack": "npm run ts-node-esm ./scripts/package-postpack",
 		"package-prepack": "npm run ts-node-esm ./scripts/package-prepack",
-		"publish-package": "npm run package-prepack",
+		"publish-package": "pnpm publish --filter react-native-ping-android --access public",
 		"ts-node-esm": "node --loader ts-node/esm -r tsconfig-paths/register",
 		"tsx": "tsx",
 		"type-check": "tsc --noEmit && tsc --project example/tsconfig.json && tsc --project package/tsconfig.json",
