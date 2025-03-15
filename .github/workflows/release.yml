@@ -30,9 +30,9 @@ jobs:
       run: pnpm install
     - name: Code check
       run: npm run code-check
-    - name: Package prepack
-      run: npm run package-prepack
     - name: Release to npm registry
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm run publish-package
+      run: |
+        npm run package-prepack
+        pnpm publish --filter react-native-ping-android --access public --no-git-checks
