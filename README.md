@@ -27,6 +27,9 @@ or with Yarn
 yarn add react-native-ping-android@1.3.0
 ```
 
+## Documentation Versioning
+The [APIs](#apis) and [Definitions](#definitions) documentation is for React Native >= 0.76 version.  
+See the previous [README.md](https://github.com/RakaDoank/react-native-ping-android/blob/291215241c542376e45d30c79f5019e4df1806e4/README.md) or from the [npm page](https://www.npmjs.com/package/react-native-ping-android/v/1.3.0) for the >= 0.72 version
 
 ## APIs
 ### ICMP
