@@ -1,2 +1,2 @@
-export type * from './icmp-constructor-data'
-export type * from './icmp-result'
+export type * from './ICMPConstructorData'
+export type * from './ICMPResult'

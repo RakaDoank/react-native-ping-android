@@ -1,7 +1,6 @@
 package com.audira.lib.reactnative.pingandroid
 
 import com.audira.lib.reactnative.pingandroid.icmp.ICMP
-import com.audira.lib.reactnative.pingandroid.icmp.resultEchoing as ICMP_resultEchoing
 
 import com.facebook.react.bridge.LifecycleEventListener
 import com.facebook.react.bridge.Promise
@@ -24,9 +23,8 @@ class PingAndroid (
 			private fun icmpCancel() {
 				try {
 					val last = mapICMP.entries.last()
-					mapICMP[last.key]?.cancel {
-						mapICMP.remove(last.key)
-					}
+					mapICMP[last.key]?.stop()
+					mapICMP.remove(last.key)
 				} catch(err: NoSuchElementException) {
 					// does nothing
 				}
@@ -50,13 +48,14 @@ class PingAndroid (
 	}
 
 	@ReactMethod
-	override fun icmpStart(
+	override fun icmp(
 		eventId: String,
 		host: String,
+		count: Double,
 		packetSize: Double,
 		timeout: Double,
 		ttl: Double,
-		promise: Promise,
+		interval: Double,
 	) {
 		if(mapICMP[eventId] == null) {
 			mapICMP[eventId] = ICMP(
@@ -64,26 +63,20 @@ class PingAndroid (
 				packetSize = packetSize.toInt(),
 				timeout = timeout.toLong(),
 				ttl = ttl.toInt(),
-				promise = promise,
+				count = count.toLong(),
+				interval = interval.toLong(),
+				onPing = {
+					emitPingListener(it)
+				}
 			)
-			mapICMP[eventId]!!.ping {
-				mapICMP.remove(eventId)
-			}
-		} else {
-			mapICMP.remove(eventId)
-			promise.resolve(
-				ICMP_resultEchoing()
-			)
+			mapICMP[eventId]?.ping()
 		}
 	}
 
 	@ReactMethod
-	override fun icmpStop(
-		eventId: String,
-	) {
-		mapICMP[eventId]?.cancel {
-			mapICMP.remove(eventId)
-		}
+	override fun icmpRemove(eventId: String) {
+		mapICMP[eventId]?.stop()
+		mapICMP.remove(eventId)
 	}
 
 	@ReactMethod

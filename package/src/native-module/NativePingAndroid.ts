@@ -4,28 +4,23 @@ import {
 } from 'react-native'
 
 import type {
+	EventEmitter,
 	Int32,
+	UnsafeObject,
 } from 'react-native/Libraries/Types/CodegenTypes'
 
-import type {
-	ICMPResult,
-} from '../ICMP/types'
-
 export interface Spec extends TurboModule {
-	icmpStart: (
+	icmp: (
 		eventId: string,
 		host: string,
-		// count: Int32,
-		/**
-		 * In bytes
-		 */
+		count: Int32,
 		packetSize: Int32,
 		timeout: Int32,
 		ttl: Int32,
-	) => Promise<ICMPResult>,
-	icmpStop: (
-		eventId: string,
+		interval: Int32,
 	) => void,
+	icmpRemove: (eventId: string) => void,
+	readonly pingListener: EventEmitter<UnsafeObject>,
 
 	isReachable: (
 		host: string,

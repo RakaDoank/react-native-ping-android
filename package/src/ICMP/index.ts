@@ -1,2 +1,2 @@
-export * from './icmp'
+export * from './ICMP'
 export type * from './types'

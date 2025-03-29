@@ -4,10 +4,11 @@ import {
 
 import {
 	PingStatus,
-} from '../../ping-status'
+} from '../../PingStatus'
 
 export interface ICMPResult {
 	rtt: Double,
 	ttl: number,
 	status: PingStatus,
+	isEnded: boolean,
 }
