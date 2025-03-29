@@ -3,14 +3,30 @@
 Expose the Internet Control Message Protocol (**ICMP**) to React Native android app.  
 Measure the round-trip time (RTT) by using ICMP echo request packets to the intended destination.
 
+🚀 This library is supported in New Architecture (Turbo Modules)
+
 ## Installation
-    npm install react-native-ping-android
+#### For React Native >= 0.76
+npm
+```
+npm install react-native-ping-android
+```
 
 or with Yarn
+```
+yarn add react-native-ping-android
+```
+#### For React Native >= 0.72
+npm
+```
+npm install react-native-ping-android@1.3.0
+```
 
-    yarn add react-native-ping-android
+or with Yarn
+```
+yarn add react-native-ping-android@1.3.0
+```
 
-🚀 This library is supported in New Architecture (Turbo Modules)
 
 ## APIs
 ### ICMP
@@ -26,17 +42,30 @@ import {
 
 export default function App(): React.JSX.Element {
     const
-        ref =
-            useRef({
-                icmp: new ICMP({ host: '1.1.1.1', packetSize: 64, timeout: 2000 }),
-            }),
+        icmp =
+            useRef<ICMP | null>(
+                new ICMP({ host: '1.1.1.1', packetSize: 64, timeout: 1000, count: 3 })
+            ),
 
         [result, setResult] =
             useState<ICMPResult | null>(null)
 
+    useEffect(() => {
+        const icmpRef = icmp.current
+        return () => {
+            icmpRef?.stop()
+        }
+    }, [])
+
     const onPress = async () => {
-        const { rtt, ttl, status } = await ref.current.icmp.ping()
-        setResult({ rtt, ttl, status })
+        icmp.current?.ping(res => {
+            setResult({
+                rtt: result.rtt,
+                ttl: result.ttl,
+                status: result.status,
+                isEnded: result.isEnded,
+            })
+        })
     }
 
     return (
@@ -55,12 +84,14 @@ export default function App(): React.JSX.Element {
 | **packetSize**  | `number` \| `null` \| `undefined` | No        | 56            | in bytes                                                                           |
 | **timeout**     | `number` \| `null` \| `undefined` | No        | 1000          | in milliseconds                                                                    |
 | **ttl**         | `number` \| `null` \| `undefined` | No        | 54            | [time-to-live](https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/) |
+| **count**       | `number` \| `null` \| `undefined` | No        | 0             | amount of try to ping. 0 is infinite count                                         |
+| **interval**    | `number` \| `null` \| `undefined` | No        | 1000          | in milliseconds
 
 #### - Methods
-| Method         | Return                                                          | Remarks                                                                                                               |
-| -------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **ping**       | [`Promise<ICMPResult>`](#icmpresult) | Run the ICMP ping with arguments that has been defined from constructor. This method will return with `PingStatus.ECHOING` status if the method is invoked again while the previous process is still running.                                                                                                                                                 |
-| **cancel**     | `void`                         | Cancel current ICMP request. This method returns nothing. However the `ping` method which invoked before will return `PingStatus.CANCELLED` status. This method does nothing if there is no ICMP requests running.                                                                                                                                                              |
+| Method       | Return | Remarks                                                                                                               |
+| ------------ | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| **ping**     | `void` | Run the ICMP ping with arguments that has been defined from constructor. This method is an event listener that will invoke your callback function. If the method is invoked again while the previous process is still running, it will invoke your callback with `PingStatus.ECHOING` status.                                                                          |
+| **stop**     | `void` | Stop current ICMP ping request. It's important to invoke this function to cleanup ICMP request to avoid memory leaks. It's safe to invoke this method even if there is no ping requests are running. |
 
 #### - Properties
 | Property            | Type                      |
@@ -69,6 +100,8 @@ export default function App(): React.JSX.Element {
 | **packetSize**      | `readonly` `number`       |
 | **timeout**         | `readonly` `number`       |
 | **ttl**             | `readonly` `number`       |
+| **count**           | `readonly` `number`       |
+| **interval**        | `readonly` `number`       |
 
 #### - Static Members
 | Static Member       | Type              | Value             | Remarks                                                                                                     |
@@ -76,15 +109,13 @@ export default function App(): React.JSX.Element {
 | **NO_ECHO_RTT**     | `number`          | -1                | Just an constant whenever the status of ping result is not `PingStatus.ECHO`. It is used in the rtt result. |
 | **NO_ECHO_TTL**     | `number`          | -1                | Just an constant whenever the status of ping result is not `PingStatus.ECHO`. It is used in the ttl result. |
 
-This API doesn't provide the count and interval functional arguments like in Windows/Darwin/Linux terminal.  
-If you want those, you can use the `useICMP()` React hook or you can implement your own interval and counter with this class. Feel free to create your own convinience.
+:warning::warning::warning: **Important!**
 
-It's safe to unmount the component without invoke the `cancel` method, like back to previous stack navigation, or unmount component with conditional rendering.
+**IT'S NOT SAFE** to unmount your component without invoke the `stop` method if there are ICMP requests that still running. Your app may still has ICMP requests that still running in the background. Consider to use `useICMP` hook that do the cleanup automatically.
 
-Good to hear that this module is using [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html).
 # 
 ### useICMP
-A React hook of encapsulated `ICMP` class that you can use to simplify the ping handle with the count and the interval functional, since the `ICMP` class doesn't provide those arguments.
+A React hook of encapsulated `ICMP` class that you may use it to simplify the cleanup handling
 ```tsx
 import { Button } from 'react-native'
 
@@ -93,7 +124,13 @@ import {
 } from 'react-native-ping-android'
 
 export default function App(): React.JSX.Element {
-    const { isRunning, result, start, stop } = useICMP()
+    const { isRunning, result, start, stop } = useICMP({
+        host: 'guthib.com',
+        packetSize: 64,
+        timeout: 1000,
+        interval: 1000,
+        count: 10,
+    })
 
     useEffect(() => {
         if(result) {
@@ -105,13 +142,7 @@ export default function App(): React.JSX.Element {
         if(isRunning) {
             stop()
         } else {
-            start({
-                host: 'guthib.com',
-                packetSize: 64,
-                timeout: 1000,
-                count: 10,
-                interval: 1000,
-            })
+            start()
         }
     }
 
@@ -125,23 +156,16 @@ export default function App(): React.JSX.Element {
 ```
 You can see full example at [/example/src/screens/ping-runner/index.tsx](https://github.com/RakaDoank/react-native-ping-android/blob/main/example/src/screens/ping-runner/index.tsx)
 
-It's safe to unmount without invoke the `stop` method. This hook will cleanup the interval handler automatically.
-```
-Requirements
-- Count must be larger than 0.
-- Interval must be >= Timeout.
-
-Otherwise, result will return with PingStatus.INVALID_ARG
-```
+It's safe to unmount your component without invoke the `stop` method. This hook will do the cleanup automatically.
 
 #### References
 #### - Returns: [UseICMP](#useicmp)
-| Properties    | Type                                          | Remarks                                                                            |
-| ------------- | --------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **isRunning** | `boolean`                                     |
-| **result**    | `ICMPResult`                         | See [ICMPResult](#icmpresult)
-| **start**     | `(data: UseICMPStartParams) => void` | See [UseICMPStartParams](#useicmpstartparams)
-| **stop**      | `() => void`                                  |
+| Properties    | Type          | Remarks                                                                            |
+| ------------- | ------------- | ---------------------------------------------------------------------------------- |
+| **isRunning** | `boolean`     |
+| **result**    | `ICMPResult`  | See [ICMPResult](#icmpresult)
+| **start**     | `() => void`  |
+| **stop**      | `() => void`  |
 #
 ### isReachable
 `(host: string, timeout?: number) => Promise<boolean | null>`
@@ -185,6 +209,7 @@ If the host argument was given with a host name, this host name will be remember
 | `rtt`         | `number`                          | When the `status` is not `PingStatus.ECHO`, the value will be -1 (`NO_ECHO_RTT`)
 | `ttl`         | `number`                          | When the `status` is not `PingStatus.ECHO`, the value will be -1 (`NO_ECHO_TTL`)
 | `status`      | `PingStatus`                      | Full references at [PingStatus](#pingstatus)
+| `isEnded`     | `boolean`                         | `true` if there is a subsequent ping request coming.
 
 #### ICMPConstructorData
 | Properties    | Type                                | Remarks                                                                                                        |
@@ -193,22 +218,19 @@ If the host argument was given with a host name, this host name will be remember
 | `packetSize`  | `number` \| `null` \| `undefined`   | Value in bytes. If it smaller than zero, the promise result will be returned with `PingStatus.INVALID_ARG` status.
 | `ttl`         | `number` \| `null` \| `undefined`   | [time-to-live](https://www.cloudflare.com/learning/cdn/glossary/time-to-live-ttl/)
 | `timeout`     | `number` \| `null` \| `undefined`   | Value in milliseconds.
+| `count`       | `number` \| `null` \| `undefined`   | Amount of try to ping. 0 is infinite count
+| `interval`    | `number` \| `null` \| `undefined`   | Value in milliseconds.
 
 #### UseICMP
 | Properties    | Type                                          | Remarks                                                                                                        |
-| ------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `isRunning`   | `boolean`                                     | A React state                                                                                                  |
+| ------------- | -----------------------------------  | -------------------------------------------------------------------------------------------------------------- |
+| `isRunning`   | `boolean`                            | A React state                                                                                                  |
 | `result`      | `ICMPResult` \| `undefined`          | See [ICMPResult](#icmpresult)
-| `start`       | `(data: UseICMPStartParams) => void` | See [UseICMPStartParams](#useicmpstartparams)
-| `stop`        | `() => void`                                  | Stop the current running process. It does nothing when there is no processes.
+| `start`       | `() => void`                         | See [UseICMPStartParams](#useicmpstartparams)
+| `stop`        | `() => void`                         | Stop the current running process. It does nothing when there is no processes.
 
-#### UseICMPStartParams
-It extends [ICMPConstructorData](#icmpconstructordata)
-| Properties    | Type           | Remarks                                                                                                                                        |
-| ------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `count`       | `number`       | Count must be larger than 0. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
-| `interval`    | `number`       | Value in milliseconds and must be larger than 0 and larger than the timeout. Otherwise, the result will be returned with `PingStatus.INVALID_ARG` status
-| …             | …              | other props from [ICMPConstructorData](#icmpconstructordata)
+#### UseICMPProps
+It extends [ICMPConstructorData](#icmpconstructordata).
 
 #### PingStatus
 | Member                         | Value          | Remarks                                                                              |
@@ -216,10 +238,9 @@ It extends [ICMPConstructorData](#icmpconstructordata)
 | `ECHO`                         | `2`            | Success
 | `ECHOING`                      | `1`            | When the `ping` method or `start` is invoked when the previous process still running
 | `TIMEDOUT`                     | `0`            |
-| `CANCELLED`                    | `-1`           |
+| `INVALID_ARG`                  | `-1`           | Invalid argument such as illegal packet size, e.g. ttl out of range.
 | `UNKNOWN_HOST`                 | `-2`           |
-| `INVALID_ARG`                  | `-3`           | Invalid argument such as illegal packet size, ttl out of range.
-| `UNKNOWN_FAILURE`              | `-4`           |
+| `UNKNOWN_FAILURE`              | `-3`           |
 #
 
 ## Android Emulator Limitations
