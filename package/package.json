@@ -67,30 +67,6 @@
 	},
 	"peerDependencies": {
 		"react": ">=17",
-		"react-native": ">=0.72"
-	},
-	"react-native-builder-bob": {
-		"source": "src",
-		"output": "lib",
-		"targets": [
-			[
-				"commonjs",
-				{
-					"esm": true
-				}
-			],
-			[
-				"module",
-				{
-					"esm": true
-				}
-			],
-			[
-				"typescript",
-				{
-					"esm": true
-				}
-			]
-		]
+		"react-native": ">=0.76"
 	}
 }
