@@ -49,21 +49,28 @@ export function PingRunnerScreen({
 		[data, setData] =
 			useState<DataState[]>([]),
 
-		{ isRunning, result, start, stop }
-			= useICMP()
+		{ isRunning, result, start, stop } =
+			useICMP({
+				host: route.params.host,
+				count: route.params.count,
+				packetSize: route.params.packetSize,
+				timeout: route.params.timeout,
+				ttl: route.params.ttl,
+			}),
 
-	const setVirtualizedListRef: React.RefCallback<VirtualizedList<ItemRendererData>>
-		= useCallback(_ref => {
-			ref.current.virtualizedList = _ref
-		}, [])
+		setVirtualizedListRef: React.RefCallback<VirtualizedList<ItemRendererData>> =
+			useCallback(_ref => {
+				ref.current.virtualizedList = _ref
+			}, []),
 
-	const startHandler = useCallback(() => {
-		console.log('startHandler: ', route.params)
-		start(route.params!)
-	}, [
-		start,
-		route.params,
-	])
+		startHandler =
+			useCallback(() => {
+				console.log('startHandler: ', route.params)
+				start()
+			}, [
+				start,
+				route.params,
+			])
 
 	useEffect(() => {
 		/**
@@ -115,7 +122,7 @@ export function PingRunnerScreen({
 	const itemGetter: NonNullable<NonNullable<VirtualizedListProps<ItemRendererData>>['getItem']>
 		= useCallback((_data, index) => {
 			return {
-				host: route.params!.host,
+				host: route.params.host,
 				...data[index],
 			}
 		}, [
@@ -266,5 +273,4 @@ const mapStatusToText: Record<number, string> = {
 	[PingStatus.INVALID_ARG]: 'Invalid',
 	[PingStatus.UNKNOWN_FAILURE]: 'Unknown Failure',
 	[PingStatus.UNKNOWN_HOST]: 'Unknown Host',
-	[PingStatus.CANCELLED]: 'Cancelled',
 }

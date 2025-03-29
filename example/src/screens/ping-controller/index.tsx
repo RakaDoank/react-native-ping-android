@@ -49,7 +49,6 @@ export function PingControllerScreen(): React.JSX.Element {
 				ttl: Number(ref.current.ttl),
 				// count: Number.POSITIVE_INFINITY,
 				count: 64,
-				interval: 1000,
 			},
 		)
 

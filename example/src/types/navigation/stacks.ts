@@ -1,8 +1,8 @@
 import type {
-	UseICMPStartParams,
+	UseICMPProps,
 } from 'react-native-ping-android'
 
 export type Stacks = {
 	ping_controller?: never,
-	ping_runner?: UseICMPStartParams,
+	ping_runner: UseICMPProps,
 }
