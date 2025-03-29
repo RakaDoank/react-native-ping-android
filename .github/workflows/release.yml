@@ -3,14 +3,14 @@ name: Release
 on:
   push:
     branches:
-    - main
+    - release
   pull_request:
     branches:
-    - main
+    - release
 
 jobs:
   release:
-    name: release package
+    name: Release Package
     runs-on: ubuntu-22.04
     environment: RELEASE
     permissions:
