@@ -1,0 +1,12 @@
+{
+	"name": "builder-bob",
+	"version": "0.0.1",
+	"scripts": {
+		"build": "node ./scripts/build.js"
+	},
+	"devDependencies": {
+		"@react-native/typescript-config": "0.78.0",
+		"@types/react": "^19.0.10",
+		"react-native-builder-bob": "0.38.0"
+	}
+}

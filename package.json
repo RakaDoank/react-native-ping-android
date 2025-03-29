@@ -4,6 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"builder-bob": "node ./libs/builder-bob/scripts/build.js",
 		"code-check": "npm run type-check && npm run lint",
 		"lint": "eslint .",
 		"package-postpack": "npm run ts-node-esm ./scripts/package-postpack",
@@ -18,7 +19,7 @@
 		"@react-native/eslint-config": "0.78.0",
 		"@stylistic/eslint-plugin": "^4.2.0",
 		"@types/node": "^22.13.10",
-		"@types/react": "^19.0.10",
+		"@types/react": "19.0.10",
 		"eslint": "9.22.0",
 		"eslint-import-resolver-typescript": "^3.8.3",
 		"eslint-plugin-import-x": "^4.6.1",
@@ -29,6 +30,6 @@
 		"tsconfig-paths": "^4.2.0",
 		"tsx": "^4.19.2",
 		"typescript": "5.8.2",
-		"typescript-eslint": "^8.26.1"
+		"typescript-eslint": "^8.28.0"
 	}
 }

@@ -263,7 +263,10 @@ export default [
 	},
 
 	{
-		files: ['scripts/**/*.js'],
+		files: [
+			'libs/builder-bob/**/*.js',
+			'scripts/**/*.js',
+		],
 		languageOptions: {
 			globals: Globals.node,
 		},

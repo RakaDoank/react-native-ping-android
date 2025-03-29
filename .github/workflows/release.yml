@@ -35,6 +35,10 @@ jobs:
       run: pnpm install --frozen-lockfile
     - name: Code check
       run: npm run code-check
+    - name: Build react-native-ping-android
+      run: |
+        npm run package-prepack
+        npm run builder-bob
     # https://github.com/pnpm/pnpm/issues/4937
     - name: Set up special NPM voodoo
       run: |
@@ -46,5 +50,4 @@ jobs:
         NPM_CONFIG_PROVENANCE: true
       if: ${{ env.NODE_AUTH_TOKEN != '' }}
       run: |
-        npm run package-prepack
         pnpm publish --filter react-native-ping-android --access public --no-git-checks
