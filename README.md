@@ -6,7 +6,7 @@ Measure the round-trip time (RTT) by using ICMP echo request packets to the inte
 🚀 This library is supported in New Architecture (Turbo Modules)
 
 ## Installation
-#### For React Native >= 0.76
+#### - For React Native >= 0.76
 npm
 ```
 npm install react-native-ping-android
@@ -16,7 +16,7 @@ or with Yarn
 ```
 yarn add react-native-ping-android
 ```
-#### For React Native >= 0.72
+#### - For React Native >= 0.72
 npm
 ```
 npm install react-native-ping-android@1.3.0
