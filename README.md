@@ -5,8 +5,21 @@ Measure the round-trip time (RTT) by using ICMP echo request packets to the inte
 
 🚀 This library is supported in New Architecture (Turbo Modules)
 
+## Requirements
+
+This library requires explicit library and React Native version due to Turbo Modules capabilities
+
+#### New Architecture
+- For React Native >= 0.76, use `react-native-ping-android` version 2.x or latest
+- For React Native >= 0.72, use `react-native-ping-android` version 1.3.0
+#### Old Architecture
+It's marked for React Native >= 0.72 and your app can use the 2.x or latest version of this library.  
+Cannot guarantee for older React Native versions support. It requires some tests.
+
+About compatibility [here](#compatibility)
+
 ## Installation
-#### - For React Native >= 0.76
+#### Version 2.x or latest
 npm
 ```
 npm install react-native-ping-android
@@ -16,7 +29,7 @@ or with Yarn
 ```
 yarn add react-native-ping-android
 ```
-#### - For React Native >= 0.72
+#### Version 1.3.0
 npm
 ```
 npm install react-native-ping-android@1.3.0
@@ -245,6 +258,11 @@ It extends [ICMPConstructorData](#icmpconstructordata).
 | `UNKNOWN_HOST`                 | `-2`           |
 | `UNKNOWN_FAILURE`              | `-3`           |
 #
+
+## Compatibility
+In the latest version, this library is using the event listener technique that performs much better rather than the resovable promise like the previous one, but he drawback is the React Native compatibility. While the new version performs better, it requires new React Native version for the New Architecture, since the [event listener (Event Emitting) capabilities](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/turbo-modules.md#add-event-emitting-capabilities) only support for React Native >= 0.76 in New Architecture, but support for React Native >= 0.72 in Old Architecture. Cannot guarantee for older React Native versions support. It requires some tests.
+
+Better to use 2.x version, simply because it performs much better. It's because the counter and the interval logic with the `setInterval` JavaScript are moved to the Kotlin side. In Kotlin side, it will reuses the instantiated Kotlin Coroutines until it's no longer needed, and emit the ping result to your event callback without blocking the JS thread at all. Not like the 1.x version that use resovable promise the ping result, create and destroy the Coroutines immediately when the promise has resolvabled, and repeat the process in JavaScript side with `setInterval`.
 
 ## Android Emulator Limitations
 Depending on the environment, the emulator might not be able to support other protocols (such as ICMP, used for "ping"). See [Local networking limitations](https://developer.android.com/studio/run/emulator-networking#networkinglimitations).
