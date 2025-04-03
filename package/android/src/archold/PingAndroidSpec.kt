@@ -3,6 +3,8 @@ package com.audira.lib.reactnative.pingandroid
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
+import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.modules.core.DeviceEventManagerModule
 
 abstract class PingAndroidSpec internal constructor(context: ReactApplicationContext) : ReactContextBaseJavaModule(context) {
 
@@ -12,16 +14,17 @@ abstract class PingAndroidSpec internal constructor(context: ReactApplicationCon
 
 	override fun getName() = NAME
 
-	abstract fun icmpStart(
+	abstract fun icmp(
 		eventId: String,
 		host: String,
+		count: Double,
 		packetSize: Double,
 		timeout: Double,
 		ttl: Double,
-		promise: Promise,
+		interval: Double,
 	)
 
-	abstract fun icmpStop(
+	abstract fun icmpRemove(
 		eventId: String,
 	)
 
@@ -35,5 +38,13 @@ abstract class PingAndroidSpec internal constructor(context: ReactApplicationCon
 		host: String,
 		promise: Promise,
 	)
+
+	protected fun emitPingListener(
+		result: ReadableMap,
+	) {
+		reactApplicationContext
+			.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+			.emit("PingListener", result)
+	}
 
 }

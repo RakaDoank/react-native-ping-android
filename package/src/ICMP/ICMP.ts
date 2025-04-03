@@ -1,5 +1,7 @@
-import type {
-	EventSubscription,
+import {
+	NativeEventEmitter,
+	NativeModules,
+	type EventSubscription,
 } from 'react-native'
 
 import NativeModule from '../native-module'
@@ -16,6 +18,10 @@ import type {
 	ICMPConstructorData,
 	ICMPResult,
 } from './types'
+
+// @ts-expect-error - Not an error. See this reference: https://github.com/react-native-community/RNNewArchitectureLibraries/blob/feat/back-turbomodule/example-library/src/index.js
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+const isTurboModuleEnabled = global.__turboModuleProxy != null
 
 export class ICMP {
 
@@ -59,22 +65,36 @@ export class ICMP {
 			)
 
 			this.pingEventHandler = onPing
-			/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-			this.pingEventSubscription = NativeModule.pingListener((
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				result: any,
-			) => {
-				this.pingEventHandler?.({
-					rtt: result.rtt,
-					status: result.status,
-					ttl: result.ttl,
-					isEnded: result.isEnded,
-				})
 
-				if(result.isEnded) {
-					this.stop()
-				}
-			})
+			/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+			if(isTurboModuleEnabled) {
+				this.pingEventSubscription = NativeModule.pingListener((
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					result: any,
+				) => {
+					this.pingEventHandler?.({
+						rtt: result.rtt,
+						status: result.status,
+						ttl: result.ttl,
+						isEnded: result.isEnded,
+					})
+					if(result.isEnded) {
+						this.stop()
+					}
+				})
+			} else {
+				this.pingEventSubscription = new NativeEventEmitter(NativeModules.RNPingAndroid).addListener('PingListener', result => {
+					this.pingEventHandler?.({
+						rtt: result.rtt,
+						status: result.status,
+						ttl: result.ttl,
+						isEnded: result.isEnded,
+					})
+					if(result.isEnded) {
+						this.stop()
+					}
+				})
+			}
 			/* eslint-enable @typescript-eslint/no-unsafe-member-access */
 		} else {
 			onPing({
