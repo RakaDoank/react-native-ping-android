@@ -1,6 +1,6 @@
 import {
-	NativeModules,
-} from 'react-native'
+	isTurboModuleCompat,
+} from './is-turbo-module-compat'
 
 import type {
 	Spec,
@@ -11,14 +11,11 @@ const LINKING_ERROR =
 	'- You rebuilt the app after installing the package\n' +
 	'- You are not using Expo Go\n'
 
-// @ts-expect-error - Not an error. See this reference: https://github.com/react-native-community/RNNewArchitectureLibraries/blob/feat/back-turbomodule/example-library/src/index.js
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-const isTurboModuleEnabled = global.__turboModuleProxy != null
-
-const module = isTurboModuleEnabled
+const module = isTurboModuleCompat()
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	? require('./NativePingAndroid').default
-	: NativeModules.RNPingAndroid
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	: require('react-native').NativeModules.RNPingAndroid
 
 const NativeModule = module
 	? module

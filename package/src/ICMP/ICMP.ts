@@ -1,10 +1,14 @@
 import {
 	NativeEventEmitter,
-	NativeModules,
+	type NativeModule as LegacyNativeModule,
 	type EventSubscription,
 } from 'react-native'
 
 import NativeModule from '../native-module'
+
+import {
+	isTurboModuleCompat,
+} from '../native-module/is-turbo-module-compat'
 
 import {
 	NO_ECHO_RTT,
@@ -19,9 +23,7 @@ import type {
 	ICMPResult,
 } from './types'
 
-// @ts-expect-error - Not an error. See this reference: https://github.com/react-native-community/RNNewArchitectureLibraries/blob/feat/back-turbomodule/example-library/src/index.js
-// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-const isTurboModuleEnabled = global.__turboModuleProxy != null
+const isTurboModuleEnabled = isTurboModuleCompat()
 
 export class ICMP {
 
@@ -83,7 +85,7 @@ export class ICMP {
 					}
 				})
 			} else {
-				this.pingEventSubscription = new NativeEventEmitter(NativeModules.RNPingAndroid).addListener('PingListener', result => {
+				this.pingEventSubscription = new NativeEventEmitter(NativeModule as unknown as LegacyNativeModule).addListener('PingListener', result => {
 					this.pingEventHandler?.({
 						rtt: result.rtt,
 						status: result.status,
