@@ -16,6 +16,10 @@ import {
 } from 'react-native'
 
 import {
+	useSafeAreaInsets,
+} from 'react-native-safe-area-context'
+
+import {
 	NO_ECHO_RTT,
 	PingStatus,
 	useICMP,
@@ -35,6 +39,9 @@ export function PingRunnerScreen({
 }: NavigationType.ScreenProps<'ping_runner'>) {
 
 	const
+		safeAreaInsets =
+			useSafeAreaInsets(),
+
 		ref =
 			useRef<{
 				initialRun: boolean,
@@ -137,7 +144,13 @@ export function PingRunnerScreen({
 
 	return (
 		<View
-			style={ Styles.page }
+			style={ [
+				Styles.page,
+				{
+					paddingTop: safeAreaInsets.top,
+					paddingBottom: safeAreaInsets.bottom,
+				},
+			] }
 		>
 			<View
 				style={ Styles.hug }
