@@ -24,12 +24,10 @@
 		".": {
 			"import": {
 				"types": "./lib/typescript/module/src/index.d.ts",
-				"react-native": "./lib/modules/index.native.js",
 				"default": "./lib/module/index.js"
 			},
 			"require": {
 				"types": "./lib/typescript/commonjs/src/index.d.ts",
-				"react-native": "./lib/commonjs/index.native.js",
 				"default": "./lib/commonjs/index.js"
 			}
 		}
