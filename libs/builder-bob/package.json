@@ -5,8 +5,8 @@
 		"build": "node ./scripts/build.js"
 	},
 	"devDependencies": {
-		"@react-native/typescript-config": "0.78.0",
-		"@types/react": "^19.0.10",
-		"react-native-builder-bob": "0.38.0"
+		"@react-native/typescript-config": "0.79.2",
+		"@types/react": "^19.0.0",
+		"react-native-builder-bob": "0.40.10"
 	}
 }
