@@ -1,5 +1,5 @@
 # react-native-ping-android
-> Soon, it will be supported for iOS and macOS. This repository and library will be entirely moved to [ping-react-native](https://github.com/RakaDoank/ping-react-native)
+> This repository and library have been moved to [ping-react-native](https://github.com/RakaDoank/ping-react-native) to support other platforms (iOS and macOS)
 
 Expose the Internet Control Message Protocol (**ICMP**) to React Native android app.  
 Measure the round-trip time (RTT) by using ICMP echo request packets to the intended destination.
